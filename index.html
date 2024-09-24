@@ -21,6 +21,11 @@
                 <p>0h 0m 0s</p>
             </div>
 
+            <div class="progressBarContainer">
+                <div id="progressBar" style="width: 0%;">
+                </div>
+            </div>
+
             <div id="content">
                 <select class="selector" id="hours">
                     <option value="0">0 hours</option>
@@ -177,8 +182,8 @@
             </div>
 
             <div class="buttonSection">
-                    <button class="btn1 roundButton" id="start">Start</button>
-                    <button class="btn2 roundButton" id="cancel">Cancel</button>
+                    <button class="roundButton" id="start"><img src="images/play_circle_50dp.svg"></button>
+                    <button class="roundButton" id="cancel"><img src="images/stop_circle_50dp_red.svg"></button>
             </div>
         </div>
         <script>
@@ -209,20 +214,23 @@
                 document.getElementById("clock").innerHTML = `<p>${timeLeft["hours"]}h ${timeLeft["minutes"]}m ${timeLeft["seconds"]}s<p>`;
                 newTimePeriod -= 1000;
 
-                // var newHeight = Math.floor(newTimePeriod/ origTimePeriod * 100) * 3;
+                 var progress = Math.floor(newTimePeriod/ origTimePeriod * 100);
 
-                // console was complaining about negative height being applied after timer ends
-                // so here is the fix
-                // if(newHeight < 0){
-                //     document.getElementById("progressBar").setAttribute("height", 0);
-                // }
-                // else{
-                //     document.getElementById("progressBar").setAttribute("height", newHeight);
-                // }
+                 // just to make sure a negative width isnt applied
+                if(progress < 0){
+                    document.getElementById("progressBar").setAttribute("style", "width: 0%");
+                }
+                else{
+                    document.getElementById("progressBar").setAttribute("style", "width: " + progress + "%");
+                }
 
                 if(newTimePeriod < 0 || cancelled){
                     clearInterval(timer);
                     document.getElementById("clock").innerHTML = "0h 0m 0s";
+                    document.getElementById("progressBar").setAttribute("style", "width: 0%");
+                    document.getElementById("hours").value = 0;
+                    document.getElementById("minutes").value = 0;
+                    document.getElementById("seconds").value = 0;
                 }
             }
 
